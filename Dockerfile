@@ -25,18 +25,17 @@ RUN echo "eula=true" > eula.txt
 RUN touch /config/help.yml && ln -s /config/help.yml
 RUN touch /config/permission.yml && ln -s /config/permission.yml
 
-# These flags from https://mcflags.emc.gs/
 CMD java -server -Xms$INIT_MEMORY -Xmx$MAX_MEMORY \
 	-XX:+UseG1GC -XX:+ParallelRefProcEnabled \
 	-XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions \
-	-XX:+DisableExplicitGC -XX:-OmitStackTraceInFastThrow \
-	-XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 \
+	-XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 \
 	-XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M \
 	-XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 \
-	-XX:G1MixedGCCountTarget=8 -XX:InitiatingHeapOccupancyPercent=15 \
+	-XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 \
 	-XX:G1MixedGCLiveThresholdPercent=90 \
 	-XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 \
-	-XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=true \
+	-XX:+PerfDisableSharedMem \
+	-XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs \
 	-Daikars.new.flags=true \
 	-jar /minecraft/paperclip.jar \
 	--noconsole --nogui \
